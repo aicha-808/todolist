@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ToDo List</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+</head>
+<body>
+
+ <div
+ <div class="list-group">
+  <div class="list-group-item ">An active item
+    <input type="text" class="text" readonly="readonly">
+  </div>
+  <div class="action">
+  <button type="button" class=" rouge btn btn-danger" id="faire" data-action="todo">to do</button>
+  <button type="button" class="btn btn-danger" id="fait" data-action="doing">doing</button>
+  <button type="button" class="btn btn-danger" id="faire" data-action="done">done</button>            
+  <button type="button" class="btn " id="sup" data-action="sup"><i class="fa-light fa-trash-can"></i></button> 
+  </div>
+            
+</div>
+
+  <script>
+    // Fonction pour changer la couleur d'une tâche
+    function changeTaskColor(task, color) {
+      task.classList.remove('list-group-item-danger', 'list-group-item-warning', 'list-group-item-success');
+      task.classList.add(color);
+    }
+
+    // Fonction pour gérer les clics sur les boutons d'action
+    function handleActionClick(event) {
+      const action = event.target.dataset.action;
+      const task = event.target.closest('.list-group-item');
+
+      switch (action) {
+        case 'todo':
+          changeTaskColor(task, 'list-group-item-danger');
+          break;
+        case 'doing':
+          changeTaskColor(task, 'list-group-item-warning');
+          break;
+        case 'done':
+          changeTaskColor(task, 'list-group-item-success');
+          break;
+      }
+    }
+
+    // Fonction pour ajouter une nouvelle tâche à la liste
+    function addTask() {
+      const taskInput = document.getElementById('taskInput');
+      const taskList = document.getElementById('taskList');
+
+      const taskName = taskInput.value.trim();
+
+      if (taskName !== '') {
+        const taskItem = document.createElement('li');
+        taskItem.classList.add('list-group-item', 'list-group-item-danger');
+        taskItem.innerHTML = `
+          ${taskName}
+          <div class="btn-group float-right">
+            <button class="btn btn-secondary" data-action="todo">To Do</button>
+            <button class="btn btn-secondary" data-action="doing">Doing</button>
+            <button class="btn btn-secondary" data-action="done">Done</button>
+          </div>
+        `;
+
+        const actionButtons = taskItem.querySelectorAll('button');
+        actionButtons.forEach(button => button.addEventListener('click', handleActionClick));
+
+        taskList.appendChild(taskItem);
+        taskInput.value = '';
+      }
+    }
+
+    // Gestionnaire de clic pour le bouton d'ajout de tâche
+    document.getElementById('addTaskButton').addEventListener('click', addTask);
+  </script>
+
+</body>
+</html>
